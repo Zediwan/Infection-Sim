@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class CFrame_save extends JPanel implements ActionListener {
+public class CFrame extends JPanel implements ActionListener {
     //screen
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 800;
@@ -15,8 +15,8 @@ public class CFrame_save extends JPanel implements ActionListener {
     //people
     //final int AMOUNT_OF_PEOPLE = (WIDTH+HEIGHT);
     final int AMOUNT_OF_PEOPLE = WIDTH+HEIGHT;
-    ArrayList<Person_save> people = new ArrayList<Person_save>();
-    ArrayList<Person_save> deadPeople = new ArrayList<Person_save>();
+    ArrayList<Person> people = new ArrayList<Person>();
+    ArrayList<Person> deadPeople = new ArrayList<Person>();
     ArrayList<Point> pointsDead = new ArrayList<Point>();
     ArrayList<Point> pointsInfected = new ArrayList<Point>();
     ArrayList<Point> pointsRecovered = new ArrayList<Point>();
@@ -28,19 +28,19 @@ public class CFrame_save extends JPanel implements ActionListener {
     final double SCALE_TIME = 1 ;
 
     public static void main (String[] arg){
-        CFrame_save c = new CFrame_save();
+        CFrame c = new CFrame();
     }
 
     public void paint(Graphics g){
         time += TIME_PERIOD;
         //calculate graph points for Infected ppl (relative)
-        double percInfected = (double)Person_save.numInfected/(double)(AMOUNT_OF_PEOPLE);
+        double percInfected = (double) Person.numInfected/(double)(AMOUNT_OF_PEOPLE);
         pointsInfected.add(new Point((time), percInfected * HEIGHT));
         //calculate graph point for Healthy ppl (relative)
-        double percHealthy = (double)(AMOUNT_OF_PEOPLE-Person_save.numInfected-Person_save.numRecovered-deadPeople.size())/(double)(AMOUNT_OF_PEOPLE);
+        double percHealthy = (double)(AMOUNT_OF_PEOPLE- Person.numInfected- Person.numRecovered-deadPeople.size())/(double)(AMOUNT_OF_PEOPLE);
         pointsHealthy.add(new Point((time),percHealthy * HEIGHT));
         //calculate graph point for Recovere ppl (relative)
-        double percRecovered = (double)Person_save.numRecovered/(double)(AMOUNT_OF_PEOPLE);
+        double percRecovered = (double) Person.numRecovered/(double)(AMOUNT_OF_PEOPLE);
         pointsRecovered.add(new Point((time),percRecovered * HEIGHT));
         //calculate graph point for dead ppl (relative)
         double percDead = (double) deadPeople.size()/(double)AMOUNT_OF_PEOPLE;
@@ -96,26 +96,26 @@ public class CFrame_save extends JPanel implements ActionListener {
             g.fillOval(x, y, POINT_SIZE, POINT_SIZE);
         }
         //paint all the people who are alive
-        for(Person_save p : people){
+        for(Person p : people){
             p.paint(g);
         }
 
         System.out.println( "People alive: " + (AMOUNT_OF_PEOPLE- deadPeople.size()) + " (" + Math.round((1-percDead)*100) + "%)\n" +
-                            "Fatal Cases: " + deadPeople.size() + " (" + Math.round(percDead*100) + "% / " +Math.round(((double) deadPeople.size()/(double)Person_save.totalNumInfected)*100) +"%)\n" +
-                            "People never infected: " + (AMOUNT_OF_PEOPLE-Person_save.numInfected-Person_save.numRecovered- deadPeople.size()) + " (" + Math.round(percHealthy*100) + "%)\n" +
-                            "Cases: " + (Person_save.totalNumInfected) + " (" + Math.round(((double)Person_save.totalNumInfected/(double)AMOUNT_OF_PEOPLE)*100) + "%)\n" +
-                            "Resickening Cases:" + (Person_save.resickeningCases) + " (" + Math.round(((double) Person_save.resickeningCases/(double)Person_save.totalNumInfected)*100) + "%)\n" +
-                            "People recovered: " + Person_save.numRecovered + " (" + Math.round(percRecovered*100) + "%)\n\n");
+                            "Fatal Cases: " + deadPeople.size() + " (" + Math.round(percDead*100) + "% / " +Math.round(((double) deadPeople.size()/(double) Person.totalNumInfected)*100) +"%)\n" +
+                            "People never infected: " + (AMOUNT_OF_PEOPLE- Person.numInfected- Person.numRecovered- deadPeople.size()) + " (" + Math.round(percHealthy*100) + "%)\n" +
+                            "Cases: " + (Person.totalNumInfected) + " (" + Math.round(((double) Person.totalNumInfected/(double)AMOUNT_OF_PEOPLE)*100) + "%)\n" +
+                            "Resickening Cases:" + (Person.resickeningCases) + " (" + Math.round(((double) Person.resickeningCases/(double) Person.totalNumInfected)*100) + "%)\n" +
+                            "People recovered: " + Person.numRecovered + " (" + Math.round(percRecovered*100) + "%)\n\n");
 
     }
 
-    public CFrame_save(){
+    public CFrame(){
         JFrame frame = new JFrame("Simulation");        //title of the frame
         frame.setSize(WIDTH, HEIGHT);                        //frame size
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         for(int i = 0; i < AMOUNT_OF_PEOPLE; i++){
-            people.add(new Person_save());
+            people.add(new Person());
         }
 
         //Timer for animation
@@ -130,7 +130,7 @@ public class CFrame_save extends JPanel implements ActionListener {
         repaint();
     }
 
-    public void noteDeath(Person_save p){
+    public void noteDeath(Person p){
         people.remove(p);       //remove from the ppl List
         deadPeople.add(p);     //add to the death List
     }

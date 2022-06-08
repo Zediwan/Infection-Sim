@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Person_save {
+public class Person {
 
     //size
     public static final int PERSON_WIDTH = 7;
@@ -31,8 +31,8 @@ public class Person_save {
     static int resickeningCases = 0;
     //recovery time
     int recoveryTime;
-    final int MIN_RECOVERY_TIME = (CFrame_save.TIME_PERIOD*7)*10;
-    final int MAX_RECOVERY_TIME = (CFrame_save.TIME_PERIOD*14)*10;
+    final int MIN_RECOVERY_TIME = (CFrame.TIME_PERIOD*7)*10;
+    final int MAX_RECOVERY_TIME = (CFrame.TIME_PERIOD*14)*10;
     static int numRecovered = 0;
 
     //social distancing
@@ -40,10 +40,10 @@ public class Person_save {
     boolean isSocialDistancing; //whether a person is distancing or not
     final double PPL_NOT_DISTANCING = 0.5; //% of ppl who ignore the rule
 
-    public Person_save(){
+    public Person(){
         //random location at the start
-        x = (int)(Math.random()*(CFrame_save.WIDTH-10)+0);
-        y = (int)(Math.random()*(CFrame_save.HEIGHT-10)+0);
+        x = (int)(Math.random()*(CFrame.WIDTH-10)+0);
+        y = (int)(Math.random()*(CFrame.HEIGHT-10)+0);
 
         //percent of ppl being sick at the start
         if(Math.random()<STARTING_SICKNESS){
@@ -67,7 +67,7 @@ public class Person_save {
         this.deathChance = DEATH_RATE/this.recoveryTime;
     }
 
-    public boolean collision(Person_save p2){
+    public boolean collision(Person p2){
         Rectangle per2 = new Rectangle(p2.x, p2.y, INFECTION_RADIUS,INFECTION_RADIUS);
         Rectangle per1 = new Rectangle(this.x, this.y, INFECTION_RADIUS,INFECTION_RADIUS);
 
@@ -114,7 +114,7 @@ public class Person_save {
 
         if(status == 1){
             //counts-down time being sick according to recovery time
-            recoveryTime -= CFrame_save.TIME_PERIOD;
+            recoveryTime -= CFrame.TIME_PERIOD;
             if(Math.random()<(this.deathChance)){
                 this.status = 3;
                 isDead = true;
@@ -139,11 +139,11 @@ public class Person_save {
         y += vy;
 
         //makes the ppl bounce of the borders fo the frame
-        if(x < 0 || x >= CFrame_save.WIDTH){
+        if(x < 0 || x >= CFrame.WIDTH){
             vx *= -1;
         }
         //makes the ppl bounce of the borders fo the frame
-        if(y < 0 || y >= CFrame_save.HEIGHT){
+        if(y < 0 || y >= CFrame.HEIGHT){
             vy *= -1;
         }
 
